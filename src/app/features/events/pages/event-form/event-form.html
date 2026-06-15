@@ -1,1 +1,65 @@
-<p>event-form works!</p>
+<div class="form-container">
+  <h2>Create new event</h2>
+
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="title">Event Title</label>
+      <input id="title" type="text" formControlName="title"
+        [class.is-invalid]="form['title'].touched && form['title'].invalid" />
+      @if (form['title'].touched && form['title'].errors) {
+      <div class="error-message">
+        @if (form['title'].errors['required']) { <span>Title is required.</span> }
+        @if (form['title'].errors['minlength']) { <span>Minimum 5 characters.</span> }
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description"
+        [class.is-invalid]="form['description'].touched && form['description'].invalid">
+      </textarea>
+      @if (form['description'].touched && form['description'].errors?.['required']) {
+      <div class="error-message">Description is required.</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="eventDate">Event Date and Time</label>
+      <input id="eventDate" type="datetime-local" formControlName="eventDate"
+        [class.is-invalid]="form['eventDate'].touched && form['eventDate'].invalid" />
+      @if (form['eventDate'].touched && form['eventDate'].errors?.['required']) {
+      <div class="error-message">Please select a date and time.</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input id="location" type="text" formControlName="location"
+        [class.is-invalid]="form['location'].touched && form['location'].invalid" />
+      @if (form['location'].touched && form['location'].errors?.['required']) {
+      <div class="error-message">Please specify a location.</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="capacity">Max. number of participants</label>
+      <input id="capacity" type="number" formControlName="capacity"
+        [class.is-invalid]="form['capacity'].touched && form['capacity'].invalid" />
+      @if (form['capacity'].touched && form['capacity'].errors) {
+      <div class="error-message">
+        @if (form['capacity'].errors['required']) { <span>Capacity is required.</span> }
+        @if (form['capacity'].errors['min']) { <span>Capacity must be a positive number.</span> }
+      </div>
+      }
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="eventForm.invalid" class="btn-submit">
+        Create Event
+      </button>
+    </div>
+
+  </form>
+</div>

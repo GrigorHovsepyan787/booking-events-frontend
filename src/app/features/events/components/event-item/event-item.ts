@@ -8,10 +8,11 @@ import { EventResponse } from '../../models/event.response';
   imports: [DatePipe],
   styleUrl: './event-item.css',
 })
-export class EventItem {
+export class EventItemComponent {
   @Input({ required: true }) event!: EventResponse;
   @Output() eventSelected = new EventEmitter<EventResponse>();
   getEventById(id: number): void {
     this.eventSelected.emit(this.event);
   }
 }
+  

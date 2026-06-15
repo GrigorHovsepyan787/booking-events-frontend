@@ -1,1 +1,41 @@
-<p>event-details works!</p>
+<div class="detail-container">
+  @if (isLoading) {
+    <div class="loading-spinner">Loading event information...</div>
+  } 
+  @else if (errorMessage) {
+    <div class="error-box">
+      <p> {{ errorMessage }}</p>
+      <button routerLink="/events" class="btn-back">Return to the list</button>
+    </div>
+  } 
+  @else {
+    <article class="event-card-detail">
+      <a routerLink="/events" class="link-back">← Return to the list</a>
+      
+      <header class="detail-header">
+        <h1>{{ event.title }}</h1>
+        <div class="meta-info">
+          <span class="date">{{ event.eventDate | date: 'longDate' }}</span>
+          <span class="location">{{ event.location }}</span>
+        </div>
+      </header>
+
+      <section class="detail-description">
+        <h3>Event Description</h3>
+        <p>{{ event.description }}</p>
+      </section>
+
+      <footer class="detail-footer">
+        <div class="spots-info">
+          Available spots: <strong>{{ event.capacity }}</strong>
+        </div>
+        <button 
+          (click)="registerForEvent()" 
+          class="btn-action" 
+          [disabled]="event.capacity <= 0">
+          {{ event.capacity > 0 ? 'Register for Event' : 'No more spots available' }}
+        </button>
+      </footer>
+    </article>
+  }
+</div>

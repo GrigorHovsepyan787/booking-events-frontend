@@ -6,7 +6,7 @@ import { NotificationDto } from '../models/notification.dto';
 @Injectable({
     providedIn: 'root'
 })
-export class Services {
+export class NotificationService {
     private readonly apiUrl = 'http://localhost:8080/api/notifications';
 
     constructor(private http: HttpClient) {}
@@ -15,8 +15,8 @@ export class Services {
         return this.http.get<NotificationDto[]>(this.apiUrl);
     }
 
-    readNotificationById(id: number, notification: Partial<NotificationDto>): Observable<NotificationDto> {
-        return this.http.patch<NotificationDto>(`${this.apiUrl}/${id}`, notification);
+    readNotificationById(id: number): Observable<NotificationDto> {
+        return this.http.patch<NotificationDto>(`${this.apiUrl}/${id}`, {});
     }
 
     deleteNotification(id: number): Observable<void> {

@@ -1,1 +1,37 @@
-<p>event-list works!</p>
+<div class="page-container">
+  <header class="page-header">
+    <h1>Upcoming events</h1>
+    <p class="page-subtitle">Find interesting events and book your place</p>
+  </header>
+
+  @if (isLoading) {
+    <div class="loading-shimmer">
+      <p>Loading events...</p>
+    </div>
+  } 
+  
+  @else if (errorMessage) {
+    <div class="error-banner">
+      <p>{{ errorMessage }}</p>
+      <button type="button" onclick="window.location.reload()">Try again</button>
+    </div>
+  } 
+  
+  @else {
+    <div class="events-grid">
+      
+      @for (item of events; track item.id) {
+        <app-event-item 
+          [event]="item">
+        </app-event-item>
+      } 
+      
+      @empty {
+        <div class="empty-state">
+          <p>There are no upcoming events at the moment. Be the first to create one!</p>
+        </div>
+      }
+
+    </div>
+  }
+</div>

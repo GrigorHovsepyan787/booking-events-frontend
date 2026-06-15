@@ -1,0 +1,49 @@
+<div class="notification-container">
+  
+  @if (isLoading) {
+    <div class="loading-wrapper">
+      <div class="spinner"></div>
+      <p>Loading notification details...</p>
+    </div>
+  } 
+  
+  @else if (errorMessage) {
+    <div class="error-card">
+      <div class="error-icon"></div>
+      <h3>Application Error</h3>
+      <p>{{ errorMessage }}</p>
+      <button routerLink="/notifications" class="btn btn-secondary">
+        Back to Notifications
+      </button>
+    </div>
+  } 
+  
+  @else {
+    <article class="notification-card">
+      
+      <header class="notification-card__header">
+        <a routerLink="/notifications" class="back-link">← Back to list</a>
+        
+        <div class="notification-meta">
+          <span class="meta-item user"> {{ notification.username }}</span>
+          <span class="meta-item date"> {{ notification.createdAt | date: 'medium' }}</span>
+        </div>
+        
+        <h1 class="notification-card__title">{{ notification.title }}</h1>
+      </header>
+
+      <main class="notification-card__body">
+        <p class="notification-message">{{ notification.message }}</p>
+      </main>
+
+      <footer class="notification-card__footer">
+        <button (click)="deleteNotification()" class="btn btn-danger">
+          Delete Notification
+        </button>
+        <span class="notification-id">ID: #{{ notification.id }}</span>
+      </footer>
+
+    </article>
+  }
+
+</div>
