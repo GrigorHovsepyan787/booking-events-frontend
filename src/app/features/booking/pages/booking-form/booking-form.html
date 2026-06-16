@@ -1,1 +1,72 @@
-<p>booking-form works!</p>
+<div class="booking-search-container">
+  
+  <header class="search-header">
+    <h1>Book an Event</h1>
+    <p class="subtitle">Find an event by title and book a spot instantly</p>
+    
+    <div class="search-box">
+      <input 
+        [formControl]="searchControl"
+        type="text" 
+        placeholder="Enter event title to search... (e.g., Concert, Workshop, Conference)"
+        class="search-input"
+      />
+      @if (isLoading) {
+        <span class="search-spinner">🔄 Searching...</span>
+      }
+    </div>
+  </header>
+
+  @if (errorMessage) {
+    <div class="error-box">⚠️ {{ errorMessage }}</div>
+  }
+
+  <main class="results-area">
+    
+    @if (!isLoading) {
+      <div class="events-list-vertical">
+        
+        @for (event of foundEvents; track event.id) {
+          <div class="event-search-item">
+            
+            <div class="event-info-block">
+              <h3>{{ event.title }}</h3>
+              <p class="event-description-snippet">{{ event.description }}</p>
+              <div class="event-meta-tags">
+                <span>📍 {{ event.location }}</span>
+                <span>📅 {{ event.eventDate }}</span>
+              </div>
+            </div>
+
+            <div class="event-action-block">
+              <div class="capacity-indicator">
+                <span [class.text-danger]="event.capacity === 0" class="capacity-count">
+                  {{ event.capacity }}
+                </span>
+                <span class="capacity-label">seats remaining</span>
+              </div>
+
+              <button 
+                (click)="makeBooking(event.id, event.title)"
+                [disabled]="event.capacity <= 0 || isBookingLoading"
+                class="btn-book-now">
+                {{ event.capacity > 0 ? 'Book Now' : 'No Seats Available' }}
+              </button>
+            </div>
+
+          </div>
+        } 
+        
+        @empty {
+          <div class="no-results">
+            <span class="no-results-icon">🔍</span>
+            <h3>No Results Found</h3>
+            <p>Try changing the search query.</p>
+          </div>
+        }
+
+      </div>
+    }
+
+  </main>
+</div>

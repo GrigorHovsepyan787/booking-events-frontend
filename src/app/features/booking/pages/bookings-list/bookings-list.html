@@ -1,1 +1,88 @@
-<p>bookings-list works!</p>
+<div class="bookings-page">
+  
+  <header class="page-header">
+    <div class="header-content">
+      <h1>My bookings</h1>
+      <p class="subtitle">Manage your tickets and registrations for events</p>
+    </div>
+  </header>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading booking list...</p>
+    </div>
+  } 
+  
+  @else if (errorMessage) {
+    <div class="error-state">
+      <p class="error-text">⚠️ {{ errorMessage }}</p>
+      <button (click)="loadAllBookings()" class="btn-retry">
+        Try again
+      </button>
+    </div>
+  } 
+  
+  @else {
+    <div class="table-container">
+      <table class="bookings-table">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Event ID</th>
+            <th>Status</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (booking of bookings; track booking.id) {
+            <tr>
+              <td class="font-mono font-bold">#{{ booking.id }}</td>
+              
+              <td>
+                <span class="event-id-tag">Event #{{ booking.eventId }}</span>
+              </td>
+              
+              <td>
+                <span class="badge status-{{ booking.status.toLowerCase() }}">
+                  {{ booking.status }}
+                </span>
+              </td>
+              
+              <td class="text-right">
+                <div class="action-buttons">
+                  <button 
+                    (click)="viewBookingDetails(booking.id)" 
+                    class="btn-view">
+                    Details
+                  </button>
+                  
+                  @if (booking.status !== 'CANCELLED') {
+                    <button 
+                      (click)="cancelBooking(booking.id)" 
+                      class="btn-cancel">
+                      Cancel
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          } 
+          
+          @empty {
+            <tr>
+              <td colspan="4" class="empty-row">
+                <div class="empty-state">
+                  <span class="empty-icon">🎟️</span>
+                  <h3>You don't have any bookings yet</h3>
+                  <p>Go to the events list to select an event you're interested in.</p>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

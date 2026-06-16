@@ -1,1 +1,81 @@
-<p>booking-details works!</p>
+<div class="booking-details-page">
+
+    <div class="page-header">
+        <a routerLink="/bookings" class="back-link">← Back to Bookings</a>
+        <h1>Booking Details</h1>
+    </div>
+
+    @if (isLoading) {
+    <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Connecting to servers... Fetching data.</p>
+    </div>
+    }
+
+    @else if (errorMessage) {
+    <div class="error-state">
+        <p>⚠️ {{ errorMessage }}</p>
+    </div>
+    }
+
+    @else {
+    <article class="ticket-container">
+
+        <section class="ticket-event-info">
+            <div class="event-header">
+                <h2>{{ event.title }}</h2>
+                <span class="event-id">Event ID: #{{ event.id }}</span>
+            </div>
+
+            <p class="event-description">{{ event.description }}</p>
+
+            <div class="event-meta">
+                <div class="meta-item">
+                    <span class="icon">📅</span>
+                    <div>
+                        <strong>Event Date</strong>
+                        <span>{{ event.eventDate | date: 'longDate' }}</span>
+                    </div>
+                </div>
+
+                <div class="meta-item">
+                    <span class="icon">📍</span>
+                    <div>
+                        <strong>Location</strong>
+                        <span>{{ event.location }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="ticket-divider"></div>
+
+        <section class="ticket-booking-status">
+
+            <div class="booking-summary">
+                <div class="booking-number">
+                    <span>Booking Number:</span>
+                    <strong>#{{ booking.id }}</strong>
+                </div>
+
+                <div class="booking-state">
+                    <span>Status:</span>
+                    <span class="badge status-{{ booking.status.toLowerCase() }}">
+                        {{ booking.status | uppercase }}
+                    </span>
+                </div>
+            </div>
+
+            @if (booking.status !== 'CANCELLED') {
+            <div class="ticket-actions">
+                <button (click)="cancelBooking()" class="btn-cancel-large">
+                    Cancel Booking
+                </button>
+            </div>
+            }
+
+        </section>
+
+    </article>
+    }
+</div>

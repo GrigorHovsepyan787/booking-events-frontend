@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventResponse } from '../models/event.response';
 import { CreateEventRequest } from '../models/create-event.request';
@@ -34,6 +34,11 @@ export class EventService {
 
     deleteEvent(id: number): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    }
+
+    searchEventsByTitle(titleQuery: string): Observable<EventResponse[]> {
+        const params = new HttpParams().set('search', titleQuery);
+        return this.http.get<EventResponse[]>(this.apiUrl, { params });
     }
 
 }

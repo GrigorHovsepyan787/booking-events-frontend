@@ -1,1 +1,67 @@
-<p>notifications-list works!</p>
+<div class="notifications-page">
+  
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Notifications centre</h1>
+      <p class="subtitle">Important system messages and updates</p>
+    </div>
+    @if (!isLoading && !errorMessage && notifications.length > 0) {
+      <span class="notifications-count">
+        Total: {{ notifications.length }}
+      </span>
+    }
+  </header>
+
+  @if (isLoading) {
+    <div class="loading-container">
+      <div class="skeleton-loader">Loading your notifications...</div>
+    </div>
+  } 
+  
+  @else if (errorMessage) {
+    <div class="error-state">
+      <p class="error-text">⚠️ {{ errorMessage }}</p>
+      <button (click)="loadNotifications()" class="btn-retry">
+        Retry   
+      </button>
+    </div>
+  } 
+  
+  @else {
+    <div class="notifications-feed">
+      
+      @for (item of notifications; track item.id) {
+        <div 
+          class="notification-item" 
+          (click)="viewNotificationDetails(item.id)"
+          role="button"
+          tabindex="0">
+          
+          <div class="notification-item__icon">
+            ✉️
+          </div>
+          
+          <div class="notification-item__content">
+            <h3 class="notification-item__title">{{ item.title }}</h3>
+        
+          </div>
+
+          <div class="notification-item__arrow">
+            ➔
+          </div>
+          
+        </div>
+      } 
+      
+      @empty {
+        <div class="empty-state">
+          <div class="empty-icon">🔔</div>
+          <h3>No notifications yet</h3>
+          <p>We'll let you know when something important happens.</p>
+        </div>
+      }
+
+    </div>
+  }
+
+</div>
