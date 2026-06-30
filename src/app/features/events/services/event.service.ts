@@ -24,12 +24,12 @@ export class EventService {
         return this.http.get<EventResponse>(`${this.apiUrl}/${id}`);
     }
 
-    createEvent(eventData: any): Observable<CreateEventRequest> {
-        return this.http.post<CreateEventRequest>(this.apiUrl, eventData);
+    createEvent(eventData: CreateEventRequest): Observable<EventResponse> {
+        return this.http.post<EventResponse>(this.apiUrl, eventData);
     }
 
-    updateEvent(id: number, eventData: any): Observable<CreateEventRequest> {
-        return this.http.put<CreateEventRequest>(`${this.apiUrl}/${id}`, eventData);
+    updateEvent(id: number, eventData: CreateEventRequest): Observable<EventResponse> {
+        return this.http.put<EventResponse>(`${this.apiUrl}/${id}`, eventData);
     }
 
     deleteEvent(id: number): Observable<void> {

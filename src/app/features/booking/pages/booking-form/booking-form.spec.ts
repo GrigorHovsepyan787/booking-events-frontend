@@ -1,19 +1,20 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BookingFormComponent } from './booking-form';
+import { EventService } from '../../../events/services/event.service';
+import { BookingService } from '../../services/booking.service';
+import { Router } from '@angular/router';
 
-import { BookingForm } from './booking-form';
+describe('BookingFormComponent', () => {
+  let component: BookingFormComponent;
+  let eventService: any;
+  let bookingService: any;
+  let router: any;
 
-describe('BookingForm', () => {
-  let component: BookingForm;
-  let fixture: ComponentFixture<BookingForm>;
+  beforeEach(() => {
+    eventService = {};
+    bookingService = {};
+    router = { navigate: () => {} };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [BookingForm],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(BookingForm);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    component = new BookingFormComponent(eventService, bookingService, router);
   });
 
   it('should create', () => {

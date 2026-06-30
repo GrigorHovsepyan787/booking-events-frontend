@@ -8,18 +8,18 @@
   } 
   
   @else if (errorMessage) {
-    <div class="error-card">
-      <div class="error-icon"></div>
-      <h3>Application Error</h3>
+    <div class="error-card fade-in-up">
+      <div class="error-icon">⚠️</div>
+      <h3>Something went wrong</h3>
       <p>{{ errorMessage }}</p>
-      <button routerLink="/notifications" class="btn btn-secondary">
+      <button routerLink="/notifications" class="btn btn-primary">
         Back to Notifications
       </button>
     </div>
   } 
   
   @else {
-    <article class="notification-card">
+    <article class="notification-card fade-in-up">
       
       <header class="notification-card__header">
         <a routerLink="/notifications" class="back-link">← Back to list</a>

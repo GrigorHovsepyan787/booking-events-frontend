@@ -1,15 +1,18 @@
 <div class="detail-container">
   @if (isLoading) {
-    <div class="loading-spinner">Loading event information...</div>
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading event information...</p>
+    </div>
   } 
   @else if (errorMessage) {
-    <div class="error-box">
+    <div class="error-box fade-in-up">
       <p> {{ errorMessage }}</p>
-      <button routerLink="/events" class="btn-back">Return to the list</button>
+      <button routerLink="/events" class="btn btn-primary">Return to the list</button>
     </div>
   } 
   @else {
-    <article class="event-card-detail">
+    <article class="event-card-detail fade-in-up">
       <a routerLink="/events" class="link-back">← Return to the list</a>
       
       <header class="detail-header">
@@ -31,7 +34,7 @@
         </div>
         <button 
           (click)="registerForEvent()" 
-          class="btn-action" 
+          class="btn btn-primary" 
           [disabled]="event.capacity <= 0">
           {{ event.capacity > 0 ? 'Register for Event' : 'No more spots available' }}
         </button>

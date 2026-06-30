@@ -1,7 +1,14 @@
-<div class="event-item">
+<div class="event-item card">
   <div class="event-item__header">
-    <h3 class="event-item__title">{{ event.title }}</h3>
-    <span class="event-item__date">{{ event.eventDate | date: 'mediumDate' }}</span>
-    <button (click)="getEventById(event.id)">View Details</button>
+    <div class="event-item__title-row">
+      <h3 class="event-item__title">{{ event.title }}</h3>
+    </div>
+    <span class="event-item__date">
+      <span class="date-icon">📅</span>
+      {{ event.eventDate | date: 'mediumDate' }}
+    </span>
+    <button type="button" (click)="onViewDetails()" class="btn btn-primary btn-view">
+      View Details →
+    </button>
   </div>
 </div>

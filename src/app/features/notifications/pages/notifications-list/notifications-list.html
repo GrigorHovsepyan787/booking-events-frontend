@@ -1,38 +1,37 @@
 <div class="notifications-page">
   
-  <header class="page-header">
+  <header class="page-header fade-in-up">
     <div class="header-content">
-      <h1>Notifications centre</h1>
+      <h1>Notifications</h1>
       <p class="subtitle">Important system messages and updates</p>
     </div>
     @if (!isLoading && !errorMessage && notifications.length > 0) {
       <span class="notifications-count">
-        Total: {{ notifications.length }}
+        {{ notifications.length }} total
       </span>
     }
   </header>
 
   @if (isLoading) {
-    <div class="loading-container">
-      <div class="skeleton-loader">Loading your notifications...</div>
+    <div class="loading-state fade-in-up">
+      <div class="spinner"></div>
+      <p>Loading your notifications...</p>
     </div>
   } 
   
   @else if (errorMessage) {
-    <div class="error-state">
-      <p class="error-text">⚠️ {{ errorMessage }}</p>
-      <button (click)="loadNotifications()" class="btn-retry">
-        Retry   
-      </button>
+    <div class="error-state fade-in-up">
+      <p class="error-state__text">⚠️ {{ errorMessage }}</p>
+      <button (click)="loadNotifications()" class="btn btn-primary">Retry</button>
     </div>
   } 
   
   @else {
-    <div class="notifications-feed">
+    <div class="notifications-feed stagger-children">
       
       @for (item of notifications; track item.id) {
         <div 
-          class="notification-item" 
+          class="notification-item card" 
           (click)="viewNotificationDetails(item.id)"
           role="button"
           tabindex="0">
@@ -43,21 +42,20 @@
           
           <div class="notification-item__content">
             <h3 class="notification-item__title">{{ item.title }}</h3>
-        
           </div>
 
           <div class="notification-item__arrow">
-            ➔
+            →
           </div>
           
         </div>
       } 
       
       @empty {
-        <div class="empty-state">
-          <div class="empty-icon">🔔</div>
-          <h3>No notifications yet</h3>
-          <p>We'll let you know when something important happens.</p>
+        <div class="empty-state fade-in-up">
+          <div class="empty-state__icon">🔔</div>
+          <h3 class="empty-state__title">No notifications yet</h3>
+          <p class="empty-state__description">We'll let you know when something important happens.</p>
         </div>
       }
 

@@ -1,4 +1,4 @@
 export interface SimpleNotificationDto {
-    id:number;
+    id: string;
     title: string;
 }

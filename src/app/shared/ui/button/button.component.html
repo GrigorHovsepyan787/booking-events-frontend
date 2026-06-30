@@ -1,0 +1,30 @@
+@if (href()) {
+  <a
+    [href]="href()"
+    [class]="buttonClass"
+    [class.disabled]="disabled()"
+    [attr.disabled]="disabled() ? true : null"
+    (click)="disabled() ? $event.preventDefault() : click.emit()"
+  >
+    <ng-content></ng-content>
+  </a>
+} @else if (routerLink()) {
+  <a
+    [routerLink]="routerLink()"
+    [class]="buttonClass"
+    [class.disabled]="disabled()"
+    [attr.disabled]="disabled() ? true : null"
+    (click)="disabled() ? $event.preventDefault() : click.emit()"
+  >
+    <ng-content></ng-content>
+  </a>
+} @else {
+  <button
+    [type]="type()"
+    [class]="buttonClass"
+    [disabled]="disabled()"
+    (click)="click.emit()"
+  >
+    <ng-content></ng-content>
+  </button>
+}

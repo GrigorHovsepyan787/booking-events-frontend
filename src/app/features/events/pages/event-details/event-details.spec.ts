@@ -1,19 +1,20 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EventDetails } from './event-details';
+import { EventService } from '../../services/event.service';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 describe('EventDetails', () => {
   let component: EventDetails;
-  let fixture: ComponentFixture<EventDetails>;
+  let eventService: any;
+  let route: any;
+  let router: any;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [EventDetails],
-    }).compileComponents();
+  beforeEach(() => {
+    eventService = {};
+    route = { snapshot: { paramMap: { get: () => '1' } } };
+    router = {};
 
-    fixture = TestBed.createComponent(EventDetails);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    component = new EventDetails(eventService, route, router);
   });
 
   it('should create', () => {

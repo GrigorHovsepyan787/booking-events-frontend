@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NotificationDto } from '../models/notification.dto';
+import { SimpleNotificationDto } from '../models/simple.notification.dto';
+import { Page } from '../../page';
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +13,8 @@ export class NotificationService {
 
     constructor(private http: HttpClient) {}
 
-    getNotifications(): Observable<NotificationDto[]> {
-        return this.http.get<NotificationDto[]>(this.apiUrl);
+    getNotifications(page: number = 0, size: number = 10): Observable<Page<SimpleNotificationDto>> {
+    return this.http.get<Page<SimpleNotificationDto>>(`${this.apiUrl}?page=${page}&size=${size}`);
     }
 
     readNotificationById(id: number): Observable<NotificationDto> {

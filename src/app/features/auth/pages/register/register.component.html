@@ -1,0 +1,74 @@
+<div class="auth-page">
+  <div class="auth-card card fade-in-up">
+    <div class="auth-header">
+      <div class="auth-icon">✨</div>
+      <h1>Create Account</h1>
+      <p class="auth-subtitle">Join us to start booking amazing events</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+      
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input 
+          id="username" 
+          type="text" 
+          formControlName="username"
+          class="input"
+          [class.is-invalid]="form['username'].touched && form['username'].invalid"
+          placeholder="Choose a username" />
+        @if (form['username'].touched && form['username'].errors) {
+          <div class="error-message">
+            @if (form['username'].errors['required']) { <span>Username is required.</span> }
+            @if (form['username'].errors['minlength']) { <span>Minimum 3 characters.</span> }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email"
+          class="input"
+          [class.is-invalid]="form['email'].touched && form['email'].invalid"
+          placeholder="your@email.com" />
+        @if (form['email'].touched && form['email'].errors) {
+          <div class="error-message">
+            @if (form['email'].errors['required']) { <span>Email is required.</span> }
+            @if (form['email'].errors['email']) { <span>Please enter a valid email.</span> }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password"
+          class="input"
+          [class.is-invalid]="form['password'].touched && form['password'].invalid"
+          placeholder="Create a strong password" />
+        @if (form['password'].touched && form['password'].errors) {
+          <div class="error-message">
+            @if (form['password'].errors['required']) { <span>Password is required.</span> }
+            @if (form['password'].errors['minlength']) { <span>Minimum 6 characters.</span> }
+          </div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary btn-submit">
+          Create Account
+        </button>
+      </div>
+
+      <div class="auth-footer">
+        <span>Already have an account?</span>
+        <a routerLink="/login" class="auth-link">Sign in</a>
+      </div>
+    </form>
+  </div>
+</div>

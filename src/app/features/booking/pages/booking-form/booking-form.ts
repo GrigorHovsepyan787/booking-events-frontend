@@ -14,10 +14,12 @@ import { BookingService } from '../../services/booking.service';
   templateUrl: './booking-form.html',
   styleUrl: './booking-form.css'
 })
-export class CreateBookingComponent implements OnInit, OnDestroy {
-  private eventService = inject(EventService);
-  private bookingService = inject(BookingService);
-  private router = inject(Router);
+export class BookingFormComponent implements OnInit, OnDestroy {
+  constructor(
+    private eventService: EventService,
+    private bookingService: BookingService,
+    private router: Router
+  ) {}
 
   protected searchControl = new FormControl('');
   

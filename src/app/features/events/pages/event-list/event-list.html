@@ -1,24 +1,30 @@
 <div class="page-container">
-  <header class="page-header">
-    <h1>Upcoming events</h1>
-    <p class="page-subtitle">Find interesting events and book your place</p>
+  <header class="page-header fade-in-up">
+    <h1>Upcoming Events</h1>
+    <p class="page-subtitle">Discover and book amazing experiences</p>
   </header>
 
   @if (isLoading) {
-    <div class="loading-shimmer">
-      <p>Loading events...</p>
+    <div class="events-grid stagger-children">
+      @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="skeleton-card">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-button"></div>
+        </div>
+      }
     </div>
   } 
   
   @else if (errorMessage) {
-    <div class="error-banner">
-      <p>{{ errorMessage }}</p>
-      <button type="button" onclick="window.location.reload()">Try again</button>
+    <div class="error-state fade-in-up">
+      <p class="error-state__text">⚠️ {{ errorMessage }}</p>
+      <button type="button" (click)="loadAllEvents()" class="btn btn-primary">Try Again</button>
     </div>
   } 
   
   @else {
-    <div class="events-grid">
+    <div class="events-grid stagger-children">
       
       @for (item of events; track item.id) {
         <app-event-item 
@@ -27,8 +33,11 @@
       } 
       
       @empty {
-        <div class="empty-state">
-          <p>There are no upcoming events at the moment. Be the first to create one!</p>
+        <div class="empty-state fade-in-up">
+          <div class="empty-state__icon">📭</div>
+          <h3 class="empty-state__title">No events available</h3>
+          <p class="empty-state__description">There are no upcoming events at the moment. Be the first to create one!</p>
+          <a routerLink="/events/new" class="btn btn-primary">Create Event</a>
         </div>
       }
 

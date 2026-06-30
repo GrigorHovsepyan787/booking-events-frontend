@@ -1,19 +1,20 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BookingDetailsComponent } from './booking-details';
+import { BookingService } from '../../services/booking.service';
+import { EventService } from '../../../events/services/event.service';
+import { ActivatedRoute } from '@angular/router';
 
-import { BookingDetails } from './booking-details';
+describe('BookingDetailsComponent', () => {
+  let component: BookingDetailsComponent;
+  let bookingService: any;
+  let eventService: any;
+  let route: any;
 
-describe('BookingDetails', () => {
-  let component: BookingDetails;
-  let fixture: ComponentFixture<BookingDetails>;
+  beforeEach(() => {
+    bookingService = {};
+    eventService = {};
+    route = { snapshot: { paramMap: { get: () => '1' } } };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [BookingDetails],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(BookingDetails);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    component = new BookingDetailsComponent(bookingService, eventService, route);
   });
 
   it('should create', () => {

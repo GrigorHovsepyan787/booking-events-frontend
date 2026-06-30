@@ -1,30 +1,28 @@
 <div class="bookings-page">
   
-  <header class="page-header">
+  <header class="page-header fade-in-up">
     <div class="header-content">
-      <h1>My bookings</h1>
+      <h1>My Bookings</h1>
       <p class="subtitle">Manage your tickets and registrations for events</p>
     </div>
   </header>
 
   @if (isLoading) {
-    <div class="loading-state">
+    <div class="loading-state fade-in-up">
       <div class="spinner"></div>
       <p>Loading booking list...</p>
     </div>
   } 
   
   @else if (errorMessage) {
-    <div class="error-state">
-      <p class="error-text">⚠️ {{ errorMessage }}</p>
-      <button (click)="loadAllBookings()" class="btn-retry">
-        Try again
-      </button>
+    <div class="error-state fade-in-up">
+      <p class="error-state__text">⚠️ {{ errorMessage }}</p>
+      <button (click)="loadAllBookings()" class="btn btn-primary">Try again</button>
     </div>
   } 
   
   @else {
-    <div class="table-container">
+    <div class="table-container card fade-in-up">
       <table class="bookings-table">
         <thead>
           <tr>
@@ -44,7 +42,7 @@
               </td>
               
               <td>
-                <span class="badge status-{{ booking.status.toLowerCase() }}">
+                <span class="badge badge-{{ booking.status.toLowerCase() }}">
                   {{ booking.status }}
                 </span>
               </td>
@@ -53,14 +51,14 @@
                 <div class="action-buttons">
                   <button 
                     (click)="viewBookingDetails(booking.id)" 
-                    class="btn-view">
+                    class="btn btn-primary btn-view">
                     Details
                   </button>
                   
                   @if (booking.status !== 'CANCELLED') {
                     <button 
                       (click)="cancelBooking(booking.id)" 
-                      class="btn-cancel">
+                      class="btn btn-danger btn-cancel">
                       Cancel
                     </button>
                   }
@@ -73,9 +71,10 @@
             <tr>
               <td colspan="4" class="empty-row">
                 <div class="empty-state">
-                  <span class="empty-icon">🎟️</span>
-                  <h3>You don't have any bookings yet</h3>
-                  <p>Go to the events list to select an event you're interested in.</p>
+                  <div class="empty-state__icon">🎟️</div>
+                  <h3 class="empty-state__title">You don't have any bookings yet</h3>
+                  <p class="empty-state__description">Go to the events list to select an event you're interested in.</p>
+                  <a routerLink="/events" class="btn btn-primary">Browse Events</a>
                 </div>
               </td>
             </tr>

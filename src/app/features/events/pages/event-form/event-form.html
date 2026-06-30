@@ -1,12 +1,16 @@
-<div class="form-container">
-  <h2>Create new event</h2>
+<div class="form-page-container">
+  <header class="form-page-header fade-in-up">
+    <h1>Create New Event</h1>
+    <p class="form-page-subtitle">Fill in the details to create your event</p>
+  </header>
 
-  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form card fade-in-up">
+    
     <div class="form-group">
-      <label for="title">Event Title</label>
-      <input id="title" type="text" formControlName="title"
-        [class.is-invalid]="form['title'].touched && form['title'].invalid" />
+      <label for="title" class="form-label">Event Title</label>
+      <input id="title" type="text" formControlName="title" class="input"
+        [class.is-invalid]="form['title'].touched && form['title'].invalid"
+        placeholder="Enter event title" />
       @if (form['title'].touched && form['title'].errors) {
       <div class="error-message">
         @if (form['title'].errors['required']) { <span>Title is required.</span> }
@@ -16,37 +20,42 @@
     </div>
 
     <div class="form-group">
-      <label for="description">Description</label>
-      <textarea id="description" formControlName="description"
-        [class.is-invalid]="form['description'].touched && form['description'].invalid">
+      <label for="description" class="form-label">Description</label>
+      <textarea id="description" formControlName="description" class="input input-textarea"
+        [class.is-invalid]="form['description'].touched && form['description'].invalid"
+        placeholder="Describe your event" rows="4">
       </textarea>
       @if (form['description'].touched && form['description'].errors?.['required']) {
       <div class="error-message">Description is required.</div>
       }
     </div>
 
-    <div class="form-group">
-      <label for="eventDate">Event Date and Time</label>
-      <input id="eventDate" type="datetime-local" formControlName="eventDate"
-        [class.is-invalid]="form['eventDate'].touched && form['eventDate'].invalid" />
-      @if (form['eventDate'].touched && form['eventDate'].errors?.['required']) {
-      <div class="error-message">Please select a date and time.</div>
-      }
+    <div class="form-row">
+      <div class="form-group">
+        <label for="eventDate" class="form-label">Event Date and Time</label>
+        <input id="eventDate" type="datetime-local" formControlName="eventDate" class="input"
+          [class.is-invalid]="form['eventDate'].touched && form['eventDate'].invalid" />
+        @if (form['eventDate'].touched && form['eventDate'].errors?.['required']) {
+        <div class="error-message">Please select a date and time.</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="location" class="form-label">Location</label>
+        <input id="location" type="text" formControlName="location" class="input"
+          [class.is-invalid]="form['location'].touched && form['location'].invalid"
+          placeholder="Event location" />
+        @if (form['location'].touched && form['location'].errors?.['required']) {
+        <div class="error-message">Please specify a location.</div>
+        }
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="location">Location</label>
-      <input id="location" type="text" formControlName="location"
-        [class.is-invalid]="form['location'].touched && form['location'].invalid" />
-      @if (form['location'].touched && form['location'].errors?.['required']) {
-      <div class="error-message">Please specify a location.</div>
-      }
-    </div>
-
-    <div class="form-group">
-      <label for="capacity">Max. number of participants</label>
-      <input id="capacity" type="number" formControlName="capacity"
-        [class.is-invalid]="form['capacity'].touched && form['capacity'].invalid" />
+      <label for="capacity" class="form-label">Max. number of participants</label>
+      <input id="capacity" type="number" formControlName="capacity" class="input"
+        [class.is-invalid]="form['capacity'].touched && form['capacity'].invalid"
+        placeholder="e.g. 50" min="1" />
       @if (form['capacity'].touched && form['capacity'].errors) {
       <div class="error-message">
         @if (form['capacity'].errors['required']) { <span>Capacity is required.</span> }
@@ -56,9 +65,10 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit" [disabled]="eventForm.invalid" class="btn-submit">
+      <button type="submit" [disabled]="eventForm.invalid" class="btn btn-primary btn-submit">
         Create Event
       </button>
+      <a routerLink="/events" class="btn btn-secondary btn-cancel">Cancel</a>
     </div>
 
   </form>

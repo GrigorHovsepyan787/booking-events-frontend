@@ -1,9 +1,19 @@
-<div class="app-wrapper">
-  <app-navbar></app-navbar> 
+<div class="h-screen flex overflow-hidden bg-slate-50">
+  <app-sidebar></app-sidebar>
 
-  <main class="content-area">
-    <router-outlet></router-outlet> 
-  </main>
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <app-navbar></app-navbar>
 
-  <app-footer></app-footer>
+    <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+      <nav class="flex items-center gap-2 text-sm mb-6" aria-label="Breadcrumb">
+        <a routerLink="/" class="text-slate-500 hover:text-indigo-600 transition-colors">Home</a>
+        <span class="text-slate-400">/</span>
+        <span class="text-slate-900 font-medium">{{ breadcrumbLabel() }}</span>
+      </nav>
+
+      <router-outlet></router-outlet>
+
+      <app-footer></app-footer>
+    </main>
+  </div>
 </div>

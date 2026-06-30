@@ -1,6 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { EventItemComponent } from '../../components/event-item/event-item';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { EventResponse } from '../../models/event.response';
 import { EventService } from '../../services/event.service';
 
@@ -10,28 +9,29 @@ import { EventService } from '../../services/event.service';
   standalone: true,
   imports: [],
   templateUrl: './my-events.html',
-  styleUrl: './my-events.css',
+  styleUrl: './my-events.css'
 })
 export class MyEvents implements OnInit {
-  private eventService = inject(EventService);
-  private router = inject(Router);
+  constructor(private eventService: EventService, private router: Router) {}
 
-  protected myEvents: EventResponse[] = [];
-  protected isLoading = true;
-  protected errorMessage = '';
+  public myEvents: EventResponse[] = [];
+  public isLoading = true;
+  public errorMessage = '';
 
   ngOnInit(): void {
-    this.loadUserEvents();
+    this.loadMyEvents();
   }
   
-  loadUserEvents(): void {
+  public loadMyEvents(): void {
     this.isLoading = true;
+    this.errorMessage = '';
     this.eventService.getUserEvents().subscribe({
-      next: (data) => {
+      next: (data: EventResponse[]) => {
         this.myEvents = data;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: (err: unknown) => {
+        console.error('Error while loading your events:', err);
         this.errorMessage = 'Error while loading your events.';
         this.isLoading = false;
       }

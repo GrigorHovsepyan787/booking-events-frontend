@@ -11,17 +11,23 @@ import { CreateEventRequest } from '../../models/create-event.request';
   styleUrl: './event-form.css',
 })
 export class EventForm {
-  private formBuilder = inject(FormBuilder);
-  private eventService = inject(EventService);
-  private router = inject(Router);
+  constructor(
+    private formBuilder: FormBuilder,
+    private eventService: EventService,
+    private router: Router
+  ) {}
 
-  protected eventForm: FormGroup = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.minLength(5)]],
-    description: ['', [Validators.required]],
-    eventDate: ['', [Validators.required]],
-    location: ['', [Validators.required]],
-    capacity: [10, [Validators.required, Validators.min(1)]]
-  });
+  protected eventForm!: FormGroup;
+
+  ngOnInit(): void {
+    this.eventForm = this.formBuilder.group({
+      title: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', [Validators.required]],
+      eventDate: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      capacity: [10, [Validators.required, Validators.min(1)]]
+    });
+  }
 
   get form() {
     return this.eventForm.controls;

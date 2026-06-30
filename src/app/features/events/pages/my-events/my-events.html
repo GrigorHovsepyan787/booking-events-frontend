@@ -1,22 +1,28 @@
 <div class="dashboard-container">
-  <div class="dashboard-header">
+  <div class="dashboard-header fade-in-up">
     <div>
       <h1>My Events</h1>
-      <p>Manage the events you have organized</p>
+      <p class="dashboard-subtitle">Manage the events you have organized</p>
     </div>
-    <button routerLink="/events/create" class="btn-create">
+    <a routerLink="/events/new" class="btn btn-success btn-create">
       + Create Event
-    </button>
+    </a>
   </div>
 
   @if (isLoading) {
-    <div class="loading-state">Loading your dashboard...</div>
+    <div class="loading-state fade-in-up">
+      <div class="spinner"></div>
+      <p>Loading your dashboard...</p>
+    </div>
   } 
   @else if (errorMessage) {
-    <div class="error-state">{{ errorMessage }}</div>
+    <div class="error-state fade-in-up">
+      <p class="error-state__text">⚠️ {{ errorMessage }}</p>
+      <button (click)="loadMyEvents()" class="btn btn-primary">Try Again</button>
+    </div>
   } 
   @else {
-    <div class="table-responsive">
+    <div class="table-responsive card fade-in-up">
       <table class="management-table">
         <thead>
           <tr>
@@ -34,14 +40,14 @@
               <td>{{ event.eventDate }}</td> 
               <td>{{ event.location }}</td>
               <td>
-                <span class="badge-capacity">{{ event.capacity }} places</span>
+                <span class="badge badge-info">{{ event.capacity }} places</span>
               </td>
               <td>
                 <div class="action-buttons">
-                  <button (click)="editEvent(event.id)" class="btn-edit">
+                  <button (click)="editEvent(event.id)" class="btn btn-primary btn-edit">
                     Edit
                   </button>
-                  <button (click)="deleteEvent(event.id, event.title)" class="btn-delete">
+                  <button (click)="deleteEvent(event.id, event.title)" class="btn btn-danger btn-delete">
                     Delete
                   </button>
                 </div>
@@ -51,7 +57,12 @@
           @empty {
             <tr>
               <td colspan="5" class="text-center empty-row">
-                You haven't created any events yet. Create one now!
+                <div class="empty-state">
+                  <div class="empty-state__icon">📋</div>
+                  <h3 class="empty-state__title">You haven't created any events yet</h3>
+                  <p class="empty-state__description">Create your first event and start managing bookings.</p>
+                  <a routerLink="/events/new" class="btn btn-primary">Create Event</a>
+                </div>
               </td>
             </tr>
           }

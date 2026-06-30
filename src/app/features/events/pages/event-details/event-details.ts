@@ -12,9 +12,11 @@ import { EventResponse } from '../../models/event.response';
   styleUrl: './event-details.css',
 })
 export class EventDetails implements OnInit{
-  private eventService = inject(EventService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+  constructor(
+    private eventService: EventService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   protected event!: EventResponse; 
   protected isLoading = true;

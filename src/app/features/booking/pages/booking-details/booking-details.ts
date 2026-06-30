@@ -15,9 +15,11 @@ import { EventResponse } from '../../../events/models/event.response';
   styleUrls: ['./booking-details.css']
 })
 export class BookingDetailsComponent implements OnInit {
-  private bookingService = inject(BookingService);
-  private eventService = inject(EventService);
-  private route = inject(ActivatedRoute);
+  constructor(
+    private bookingService: BookingService,
+    private eventService: EventService,
+    private route: ActivatedRoute
+  ) {}
 
   protected booking!: BookingResponse;
   protected event!: EventResponse;

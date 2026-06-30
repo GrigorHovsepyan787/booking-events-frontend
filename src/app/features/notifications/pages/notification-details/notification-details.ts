@@ -1,24 +1,26 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../services/notification.service';
 import { NotificationDto } from '../../models/notification.dto';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-notification-details',
   standalone: true,
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe],
   templateUrl: './notification-details.html',
-  styleUrl: './notification-details.css',
+  styleUrl: './notification-details.css'
 })
 export class NotificationDetails implements OnInit {
-  private notificationService = inject(NotificationService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+  public notification!: NotificationDto;
+  public isLoading = true;
+  public errorMessage = '';
 
-  protected notification!: NotificationDto;
-  protected isLoading = true;
-  protected errorMessage = '';
+  constructor(
+    private notificationService: NotificationService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -48,7 +50,7 @@ export class NotificationDetails implements OnInit {
     });
   }
 
-  protected deleteNotification(): void {
+  public deleteNotification(): void {
     if (confirm('Are you sure you want to delete this notification?')) {
       this.notificationService.deleteNotification(this.notification.id).subscribe({
         next: () => {
@@ -60,5 +62,9 @@ export class NotificationDetails implements OnInit {
         }
       });
     }
+  }
+
+  public goBack(): void {
+    this.router.navigate(['/notifications']);
   }
 }
