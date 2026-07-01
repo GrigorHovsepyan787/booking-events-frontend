@@ -1,5 +1,5 @@
 export interface NotificationDto{
-    id: number;
+    id: string;
     username: string;
     title: string;
     message: string;

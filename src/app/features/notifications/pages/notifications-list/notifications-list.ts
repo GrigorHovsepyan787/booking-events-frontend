@@ -1,7 +1,6 @@
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
 import { Router } from '@angular/router';
-import { SimpleNotificationDto } from '../../models/simple.notification.dto';
 import { isPlatformBrowser } from '@angular/common';
 
 
@@ -17,6 +16,7 @@ export class NotificationsList implements OnInit {
   public errorMessage = '';
   
   private platformId = inject(PLATFORM_ID);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(
     public notificationService: NotificationService,
@@ -35,15 +35,17 @@ export class NotificationsList implements OnInit {
       next: (pageData) => {
         this.notifications = pageData.content; 
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err: unknown) => {
         console.error('Error while loading notifications:', err);
         this.errorMessage = 'Failed to load notifications.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
 }
-  protected viewNotificationDetails(notificationId: number): void {
+  protected viewNotificationDetails(notificationId: string): void {
     this.router.navigate(['/notifications', notificationId]);
   }
 }

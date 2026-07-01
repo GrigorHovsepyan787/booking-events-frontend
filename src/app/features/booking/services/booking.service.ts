@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BookingResponse } from '../models/booking.response';
+import { Page } from '../../page';
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +12,8 @@ export class BookingService {
      
     constructor(private http: HttpClient) {}
 
-    getBookings(): Observable<BookingResponse[]> {
-        return this.http.get<BookingResponse[]>(this.apiUrl);
+    getBookings(page: number = 0, size: number = 10): Observable<Page<BookingResponse>> {
+        return this.http.get<Page<BookingResponse>>(`${this.apiUrl}?page=${page}&size=${size}`);
     }
     getBookingById(id: number): Observable<BookingResponse> {
         return this.http.get<BookingResponse>(`${this.apiUrl}/${id}`);

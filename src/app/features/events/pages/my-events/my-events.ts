@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, ChangeDetectorRef  } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventResponse } from '../../models/event.response';
 import { EventService } from '../../services/event.service';
-
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-my-events',
@@ -17,23 +17,29 @@ export class MyEvents implements OnInit {
   public myEvents: EventResponse[] = [];
   public isLoading = true;
   public errorMessage = '';
+  private platformId = inject(PLATFORM_ID);
+  private cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-    this.loadMyEvents();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadMyEvents();
+    }
   }
   
   public loadMyEvents(): void {
     this.isLoading = true;
     this.errorMessage = '';
     this.eventService.getUserEvents().subscribe({
-      next: (data: EventResponse[]) => {
-        this.myEvents = data;
+      next: (pageData) => {
+        this.myEvents = pageData.content;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err: unknown) => {
         console.error('Error while loading your events:', err);
         this.errorMessage = 'Error while loading your events.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

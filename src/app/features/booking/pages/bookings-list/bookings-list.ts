@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
 import { BookingResponse } from '../../models/booking.response';
@@ -7,77 +8,7 @@ import { BookingResponse } from '../../models/booking.response';
   selector: 'app-bookings-list',
   standalone: true,
   imports: [],
-  template: `
-    <div class="bookings-page">
-      <header class="page-header">
-        <div class="header-content">
-          <h1>My bookings</h1>
-          <p class="subtitle">Manage your tickets and registrations for events</p>
-        </div>
-      </header>
-
-      @if (isLoading) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Loading booking list...</p>
-        </div>
-      } 
-      
-      @else if (errorMessage) {
-        <div class="error-state">
-          <p class="error-text">⚠️ {{ errorMessage }}</p>
-          <button (click)="loadAllBookings()" class="btn-retry">Try again</button>
-        </div>
-      } 
-      
-      @else {
-        <div class="table-container">
-          <table class="bookings-table">
-            <thead>
-              <tr>
-                <th>Booking ID</th>
-                <th>Event ID</th>
-                <th>Status</th>
-                <th class="text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (booking of bookings; track booking.id) {
-                <tr>
-                  <td class="font-mono font-bold">#{{ booking.id }}</td>
-                  <td><span class="event-id-tag">Event #{{ booking.eventId }}</span></td>
-                  <td>
-                    <span class="badge status-{{ booking.status.toLowerCase() }}">
-                      {{ booking.status }}
-                    </span>
-                  </td>
-                  <td class="text-right">
-                    <div class="action-buttons">
-                      <button (click)="viewBookingDetails(booking.id)" class="btn-view">Details</button>
-                      @if (booking.status !== 'CANCELLED') {
-                        <button (click)="cancelBooking(booking.id)" class="btn-cancel">Cancel</button>
-                      }
-                    </div>
-                  </td>
-                </tr>
-              } 
-              @empty {
-                <tr>
-                  <td colspan="4" class="empty-row">
-                    <div class="empty-state">
-                      <span class="empty-icon">🎟️</span>
-                      <h3>You don't have any bookings yet</h3>
-                      <p>Go to the events list to select an event you're interested in.</p>
-                    </div>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      }
-    </div>
-  `,
+  templateUrl: `bookings-list.html`,
   styles: [`
     .bookings-page { padding: 20px; }
     .page-header { margin-bottom: 20px; }
@@ -103,28 +34,35 @@ import { BookingResponse } from '../../models/booking.response';
   `],
 })
 export class BookingsListComponent implements OnInit {
+  private platformId = inject(PLATFORM_ID);
+
   constructor(private service: BookingService, private router: Router) {}
 
   public bookings: BookingResponse[] = [];
   public isLoading = true;
   public errorMessage = '';
-
+  private cdr = inject(ChangeDetectorRef);
+  
   ngOnInit(): void {
-    this.loadAllBookings();  
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadAllBookings(); 
+    }else{}
   }
 
   protected loadAllBookings(): void {
     this.isLoading = true;
     this.errorMessage = '';
     this.service.getBookings().subscribe({
-      next: (data: BookingResponse[]) => {
-        this.bookings = data;
+      next: (pageData) => {
+        this.bookings = pageData.content;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err: unknown) => {
         console.error('Error while loading bookings:', err);
         this.errorMessage = 'Failed to load bookings. Please try again later.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -133,7 +71,7 @@ export class BookingsListComponent implements OnInit {
   }
 
   protected cancelBooking(bookingId: number): void {
-    if (confirm(`Вы уверены, что хотите отменить бронирование №${bookingId}?`)) {
+    if (confirm(`Are you sure to cancel the booking? №${bookingId}?`)) {
       this.service.deleteBooking(bookingId).subscribe({
         next: () => {
           this.bookings = this.bookings.map(b => 

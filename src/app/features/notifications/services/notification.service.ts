@@ -17,11 +17,11 @@ export class NotificationService {
     return this.http.get<Page<SimpleNotificationDto>>(`${this.apiUrl}?page=${page}&size=${size}`);
     }
 
-    readNotificationById(id: number): Observable<NotificationDto> {
+    readNotificationById(id: string): Observable<NotificationDto> {
         return this.http.patch<NotificationDto>(`${this.apiUrl}/${id}`, {});
     }
 
-    deleteNotification(id: number): Observable<void> {
+    deleteNotification(id: string): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
 }

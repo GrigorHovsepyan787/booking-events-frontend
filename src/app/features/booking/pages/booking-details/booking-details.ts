@@ -1,5 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 import { DatePipe, UpperCasePipe } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { BookingService } from '../../services/booking.service';;
@@ -21,19 +22,25 @@ export class BookingDetailsComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
+  private platformId = inject(PLATFORM_ID);
   protected booking!: BookingResponse;
   protected event!: EventResponse;
-  
+  private cdr = inject(ChangeDetectorRef);
+
   protected isLoading = true;
   protected errorMessage = '';
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      this.loadBookingAndEvent(Number(idParam));
+    if (isPlatformBrowser(this.platformId)) {
+      const idParam = this.route.snapshot.paramMap.get('id');
+      if (idParam) {
+        this.loadBookingAndEvent(Number(idParam));
+      } else {
+        this.errorMessage = 'Incorrect booking ID.';
+        this.isLoading = false;
+      }
     } else {
-      this.errorMessage = 'Incorrect booking ID.';
-      this.isLoading = false;
+      this.isLoading = true; 
     }
   }
 
@@ -51,11 +58,13 @@ export class BookingDetailsComponent implements OnInit {
       next: (eventData: EventResponse) => {
         this.event = eventData;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error while loading data:', err);
         this.errorMessage = 'Failed to load booking or event data.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, ChangeDetectorRef, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 import { NotificationService } from '../../services/notification.service';
 import { NotificationDto } from '../../models/notification.dto';
 import { DatePipe } from '@angular/common';
@@ -15,6 +16,8 @@ export class NotificationDetails implements OnInit {
   public notification!: NotificationDto;
   public isLoading = true;
   public errorMessage = '';
+  private platformId = inject(PLATFORM_ID);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(
     private notificationService: NotificationService,
@@ -23,29 +26,34 @@ export class NotificationDetails implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    
-    if (idParam) {
-      const notificationId = Number(idParam); 
-      this.loadNotificationDetails(notificationId);
+    if (isPlatformBrowser(this.platformId)) {
+      const idParam = this.route.snapshot.paramMap.get('id');
+      if (idParam) {
+        this.loadNotificationDetails(String(idParam));
+      } else {
+        this.errorMessage = 'Incorrect notification ID.';
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
     } else {
-      this.errorMessage = 'Incorrect notification ID.';
-      this.isLoading = false;
+      this.isLoading = true;
     }
   }
 
-  private loadNotificationDetails(id: number): void {
+  private loadNotificationDetails(id: string): void {
     this.isLoading = true;
     
     this.notificationService.readNotificationById(id).subscribe({
       next: (data: NotificationDto) => {
         this.notification = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error occurred while fetching the notification:', err);
         this.errorMessage = 'Notification not found or server is unavailable.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

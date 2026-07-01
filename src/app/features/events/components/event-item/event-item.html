@@ -7,8 +7,6 @@
       <span class="date-icon">📅</span>
       {{ event.eventDate | date: 'mediumDate' }}
     </span>
-    <button type="button" (click)="onViewDetails()" class="btn btn-primary btn-view">
-      View Details →
-    </button>
+    <a [routerLink]="['/events', event.id]" class="btn btn-primary">View Details</a>
   </div>
 </div>

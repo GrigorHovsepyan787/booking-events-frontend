@@ -1,8 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { EventService } from '../../services/event.service';
 import { EventResponse } from '../../models/event.response';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-event-details',
@@ -21,17 +22,22 @@ export class EventDetails implements OnInit{
   protected event!: EventResponse; 
   protected isLoading = true;
   protected errorMessage = '';
+  private platformId = inject(PLATFORM_ID);
+  private cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    
-    if (idParam) {
-      const eventId = Number(idParam); 
-      this.loadEventDetails(eventId);
-    } else {
-      this.errorMessage = 'Incorrect event ID.';
-      this.isLoading = false;
-    }
+    if (isPlatformBrowser(this.platformId)) {
+      const idParam = this.route.snapshot.paramMap.get('id');
+      if (idParam) {
+        const eventId = Number(idParam); 
+        this.loadEventDetails(eventId);
+      } else {
+        this.errorMessage = 'Incorrect event ID.';
+        this.isLoading = false;
+      }
+    }else{
+        this.isLoading = true;
+      }
   }
 
   private loadEventDetails(id: number): void {
@@ -41,11 +47,13 @@ export class EventDetails implements OnInit{
       next: (data: EventResponse) => {
         this.event = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error occurred while fetching the event:', err);
         this.errorMessage = 'Event not found or server is unavailable.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

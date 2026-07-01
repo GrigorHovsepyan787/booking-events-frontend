@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventResponse } from '../models/event.response';
 import { CreateEventRequest } from '../models/create-event.request';
+import { Page } from '../../page';
 
 @Injectable({
     providedIn: 'root'
@@ -12,12 +13,12 @@ export class EventService {
 
     constructor(private http: HttpClient) {}
 
-    getEvents(): Observable<EventResponse[]> {
-        return this.http.get<EventResponse[]>(this.apiUrl);
+    getEvents(page: number = 0, size: number = 10): Observable<Page<EventResponse>> {
+        return this.http.get<Page<EventResponse>>(this.apiUrl);
     }
 
-    getUserEvents(): Observable<EventResponse[]> {
-        return this.http.get<EventResponse[]>(`${this.apiUrl}/user/my`);
+    getUserEvents(page: number = 0, size: number = 10): Observable<Page<EventResponse>> {
+        return this.http.get<Page<EventResponse>>(`${this.apiUrl}/user/my`);
     }
 
     getEventById(id: number): Observable<EventResponse> {

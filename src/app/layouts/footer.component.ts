@@ -33,7 +33,6 @@ import { RouterLink } from '@angular/router';
             <nav class="flex flex-col gap-3">
               <a routerLink="/login" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors">Login</a>
               <a routerLink="/register" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors">Register</a>
-              <a routerLink="/profile" class="text-sm text-slate-400 hover:text-indigo-400 transition-colors">Profile</a>
             </nav>
           </div>
         </div>
